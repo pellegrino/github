@@ -39,7 +39,7 @@ module Github
       #
       # = Examples
       #  github = Github.new
-      #  github.repos.commits.create_comment 'user-name', 'repo-name', 'sha-key', 
+      #  github.repos.commits.create_comment 'user-name', 'repo-name', 'sha-key',
       #    "body" => "Nice change",
       #    "commit_id" => "6dcb09b5b57875f334f61aebed695e2e4193db5e",
       #    "line" => 1,
@@ -80,7 +80,8 @@ module Github
       # * <tt>:sha</tt>     Optional string. Sha or branch to start listing commits from.
       # * <tt>:path</tt>    Optional string. Only commits containing this file path will be returned.
       # * <tt>:author</tt>  GitHub login, name, or email by which to filter by commit author.
-      #
+      # * <tt>:since</tt>   Timestamp in ISO8601
+      # * <tt>:until</tt>   Timestamp in ISO8601
       # = Examples
       #  github = Github.new
       #  github.repos.commits.list 'user-name', 'repo-name', :sha => '...'
@@ -90,7 +91,7 @@ module Github
         _update_user_repo_params(user_name, repo_name)
         _validate_user_repo_params(user, repo) unless user? && repo?
         normalize! params
-        filter! %w[sha path author], params
+        filter! %w[sha path author since until], params
 
         response = get_request("/repos/#{user}/#{repo}/commits", params)
         return response unless block_given?
